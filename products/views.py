@@ -2,6 +2,10 @@ import json
 
 from django.http import JsonResponse, Http404
 from django.views import View
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from products.models import Products
 from products.serializer import ProductSerializer
 
@@ -23,7 +27,9 @@ class GetJsons:
         except json.decoder.JSONDecodeError:
             raise Http404
 
-class ProductListView(View):
+class ProductListView(APIView):
+
+    permission_classes = [IsAuthenticated]
 
     def get(self, request) -> JsonResponse:
         products = Products.objects.all()
@@ -34,7 +40,9 @@ class ProductListView(View):
         }, status=200)
 
 
-class OneProductView(View):
+class OneProductView(APIView):
+
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, tig_id) -> JsonResponse:
         product = GetProducts.get_product(tig_id)
@@ -44,7 +52,9 @@ class OneProductView(View):
             'product': serializer.data
         }, status=200)
 
-class UpdateProductView(View):
+class UpdateProductView(APIView):
+
+    permission_classes = [IsAuthenticated]
 
     def put(self, request, tig_id) -> JsonResponse:
         product = GetProducts.get_product(tig_id)
@@ -59,7 +69,9 @@ class UpdateProductView(View):
             "success": False
         })
 
-class UpdateMultipleProductsView(View):
+class UpdateMultipleProductsView(APIView):
+
+    permission_classes = [IsAuthenticated]
 
     def put(self, request) -> JsonResponse:
         try:
