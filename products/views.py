@@ -62,12 +62,10 @@ class UpdateProductView(View):
 class UpdateMultipleProductsView(View):
 
     def put(self, request) -> JsonResponse:
-        print(request)
         try:
-            data = GetJsons.get_jsons(request.body)
             return_array = []
 
-            for product_data in data:
+            for product_data in GetJsons.get_jsons(request.body):
                 tig_id = product_data.get('tig_id')
                 if not tig_id:
                     continue
