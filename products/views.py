@@ -30,7 +30,7 @@ class ProductListView(View):
         serializer = ProductSerializer(products, many=True)
         return JsonResponse({
             'success': True,
-            'product': serializer.data
+            'products': serializer.data
         }, status=200)
 
 
@@ -58,3 +58,35 @@ class UpdateProductView(View):
         return JsonResponse({
             "success": False
         })
+
+class UpdateMultipleProductsView(View):
+
+    def put(self, request) -> JsonResponse:
+        print(request)
+        try:
+            data = GetJsons.get_jsons(request.body)
+            return_array = []
+
+            for product_data in data:
+                tig_id = product_data.get('tig_id')
+                if not tig_id:
+                    continue
+
+                # Récupérer le produit à mettre à jour
+                product = GetProducts.get_product(tig_id)
+
+                # Sérialiser et valider les données
+                serializer = ProductSerializer(product, data=product_data, partial=True)
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save()
+                    return_array.append(serializer.data)
+
+            return JsonResponse({
+                'success': True,
+                'products': return_array
+            }, status=201)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format.'}, status=400)
+        except Http404:
+            return JsonResponse({'error': 'Product not found.'}, status=404)
