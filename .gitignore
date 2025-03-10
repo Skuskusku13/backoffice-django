@@ -1,3 +1,24 @@
+# Fichiers Python compilés
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environnement virtuel
 .venv/
-.idea/
+.env
+.env.*
+
+*.sqlite3
+db.sqlite3
+
+# Migrations cachées
+**/migrations/__pycache__/
+**/migrations/*.pyc
+
+
 .vscode/
+.idea/
+*.iml
+
+.DS_Store
