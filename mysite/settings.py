@@ -16,7 +16,7 @@ import os
 from django.conf import settings
 from dotenv import load_dotenv
 
-# Charger le fichier ..env
+# Charger le fichier .env
 ENV = load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
