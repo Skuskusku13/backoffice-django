@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
-from products.models import Products
-from products.serializer import ProductSerializer
-from products.config import URL_BINH
+from product.models import Product
+from product.serializer import ProductSerializer
+from product.config import URL_BINH
 import requests
 import time
 
@@ -13,7 +13,7 @@ class Command(BaseCommand):
         self.stdout.write('[' + time.ctime() + '] Refreshing data...')
         response = requests.get(URL_BINH + 'products/')
         jsondata = response.json()
-        Products.objects.all().delete()
+        Product.objects.all().delete()
         for product in jsondata:
             serializer = ProductSerializer(data={
                 'tig_id':       str(product['id']),
