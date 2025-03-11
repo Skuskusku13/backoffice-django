@@ -1,9 +1,9 @@
 from rest_framework.serializers import ModelSerializer
-from products.models import Products
+from product.models import Product
 
 class ProductSerializer(ModelSerializer):
     class Meta:
-        model = Products
+        model = Product
         fields = (
             'id',
             'tig_id',

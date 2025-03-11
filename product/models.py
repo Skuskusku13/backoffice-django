@@ -2,7 +2,7 @@
 from django.db import models
 
 
-class Products(models.Model):
+class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     tig_id = models.IntegerField(default='-1')
     name = models.CharField(max_length=100, blank=True, default='')
