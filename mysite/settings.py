@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'rest_framework_simplejwt',
     'product.apps.ProductsConfig',
+    "transaction.apps.TransactionConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
