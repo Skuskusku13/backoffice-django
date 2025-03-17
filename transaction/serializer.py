@@ -8,7 +8,11 @@ class TransactionSerializer(ModelSerializer):
         model = Transaction
         fields = (
             'id',
+            'date',
             'tig_id',
+            'category',
             'quantity',
-            'price'
+            'price',
+            'onSale',
+            'type'
         )

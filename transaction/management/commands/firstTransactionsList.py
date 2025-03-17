@@ -30,9 +30,13 @@ class Command(BaseCommand):
 
         for transaction in data:
             serializer = TransactionSerializer(data={
+                'date': str(transaction['date']),
                 'tig_id': str(transaction['tig_id']),
+                'category': str(transaction['category']),
                 'quantity': str(transaction['quantity']),
                 'price': str(transaction['price']),
+                'onSale': str(transaction['onSale']),
+                'type': str(transaction['type']),
             })
             if serializer.is_valid():
                 serializer.save()

@@ -1,17 +1,29 @@
 [
   {
-    "tig_id": "12",
-    "quantity": "27",
-    "price": 8.2
+    "date": "2025-03-16T10:01:02.501716Z",
+    "tig_id": 12,
+    "category": 0,
+    "quantity": 27,
+    "price": 8.3,
+    "onSale": false,
+    "type": "retraitVente"
   },
   {
-    "tig_id": "12",
-    "quantity": "11",
-    "price": 122
+    "date": "2025-03-16T11:01:02.501716Z",
+    "tig_id": 12,
+    "category": 0,
+    "quantity": 15,
+    "price": 9.3,
+    "onSale": false,
+    "type": "retraitVente"
   },
   {
-    "tig_id": "12",
-    "quantity": "12",
-    "price": 3.1
+    "date": "2025-03-16T12:01:02.501716Z",
+    "tig_id": 12,
+    "category": 0,
+    "quantity": 30,
+    "price": 10.3,
+    "onSale": true,
+    "type": "retraitVente"
   }
 ]
