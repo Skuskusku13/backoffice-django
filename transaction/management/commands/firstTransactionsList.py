@@ -1,3 +1,5 @@
+import json
+import os
 from xmlrpc.client import DateTime
 
 from django.core.management.base import BaseCommand, CommandError
@@ -14,19 +16,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('[' + time.ctime() + '] Adding data...')
         Transaction.objects.all().delete()
-        data = [{
-            'tig_id': '12',
-            'quantity': '27',
-            'price': 8.2,
-        },{
-            'tig_id': '12',
-            'quantity': '11',
-            'price': 2,
-        },{
-            'tig_id': '12',
-            'quantity': '12',
-            'price': 3.1,
-        }]
+
+        file_path = os.path.join(os.path.dirname(__file__), 'transactions.json')
+        try:
+            with open(file_path, 'r') as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            self.stdout.write(self.style.ERROR("File 'transactions.json' not found."))
+            return
+        except json.JSONDecodeError:
+            self.stdout.write(self.style.ERROR("Invalid JSON format."))
+            return
+
         for transaction in data:
             serializer = TransactionSerializer(data={
                 'tig_id': str(transaction['tig_id']),
