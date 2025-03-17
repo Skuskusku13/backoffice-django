@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.http import JsonResponse, Http404
 from django.views import View
@@ -8,6 +9,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from product.models import Product
 from product.serializer import ProductSerializer
+from transaction.serializer import TransactionSerializer
+
 
 class GetProducts:
 
@@ -18,6 +21,7 @@ class GetProducts:
         except Product.DoesNotExist:
             raise Http404
 
+
 class GetJsons:
 
     @staticmethod
@@ -27,8 +31,31 @@ class GetJsons:
         except json.decoder.JSONDecodeError:
             raise Http404
 
-class ProductListView(APIView):
 
+class CreateTransaction:
+    @staticmethod
+    def create_transaction(product: Product, body) -> TransactionSerializer:
+        transaction_quantity = body['quantityInStock'] -product.quantityInStock
+
+        if transaction_quantity < 0 and body['purchasePrice'] == 0:
+            transaction_type = 'retraitInvendus'
+        elif transaction_quantity < 0 < body['purchasePrice']:
+            transaction_type = 'retraitVente'
+        else:
+            transaction_type = 'ajout'
+
+        return TransactionSerializer(
+            data={"date": datetime.now(),
+                  "tig_id": body['tig_id'],
+                  "category": product.category,
+                  "quantity": transaction_quantity,
+                  "price": body['purchasePrice'],
+                  "onSale": body['sale'],
+                  "type": transaction_type
+                  })
+
+
+class ProductListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request) -> JsonResponse:
@@ -41,7 +68,6 @@ class ProductListView(APIView):
 
 
 class OneProductView(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def get(self, request, tig_id) -> JsonResponse:
@@ -52,15 +78,17 @@ class OneProductView(APIView):
             'product': serializer.data
         }, status=200)
 
-class UpdateProductView(APIView):
 
+class UpdateProductView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request, tig_id) -> JsonResponse:
         product = GetProducts.get_product(tig_id)
         serializer = ProductSerializer(product, data=GetJsons.get_jsons(request.body), partial=True)
-        if serializer.is_valid(raise_exception=True):
+        transaction_serializer = CreateTransaction.create_transaction(product, GetJsons.get_jsons(request.body))
+        if serializer.is_valid(raise_exception=True) and transaction_serializer.is_valid(raise_exception=True):
             serializer.save()
+            transaction_serializer.save()
             return JsonResponse({
                 'success': True,
                 'product': serializer.data
@@ -69,8 +97,8 @@ class UpdateProductView(APIView):
             "success": False
         })
 
-class UpdateMultipleProductsView(APIView):
 
+class UpdateMultipleProductsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request) -> JsonResponse:
@@ -87,8 +115,10 @@ class UpdateMultipleProductsView(APIView):
 
                 # Sérialiser et valider les données
                 serializer = ProductSerializer(product, data=product_data, partial=True)
-                if serializer.is_valid(raise_exception=True):
+                transaction_serializer = CreateTransaction.create_transaction(product, GetJsons.get_jsons(request.body))
+                if serializer.is_valid(raise_exception=True) and transaction_serializer.is_valid(raise_exception=True):
                     serializer.save()
+                    transaction_serializer.save()
                     return_array.append(serializer.data)
 
             return JsonResponse({
