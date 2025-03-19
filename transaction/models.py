@@ -24,5 +24,10 @@ class Transaction(models.Model):
         default='ajout'
     )
 
+    def get_revenue(self):
+        """Retourne le chiffre d'affaires de la transaction uniquement si c'est une vente"""
+        print('ICIlol: ',self.type)
+        return self.price if self.type == 'retraitVente' else 0
+
     class Meta:
         ordering = ('created',)
