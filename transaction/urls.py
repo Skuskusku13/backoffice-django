@@ -1,9 +1,9 @@
 from django.urls import path
 
-from transaction.views import TransactionsListView, OneTransactionView, RevenueByFilters
+from transaction.views import TransactionsListView, OneTransactionView, RevenuesAndBillsByFilters
 
 urlpatterns = [
     path('', TransactionsListView.as_view(), name='transactions_list'),
     path('<int:id>', OneTransactionView.as_view(), name='one_transaction'),
-    path('CA/', RevenueByFilters.as_view(), name='revenue_by_filters')
+    path('CA/', RevenuesAndBillsByFilters.as_view(), name='revenue_by_filters')
 ]

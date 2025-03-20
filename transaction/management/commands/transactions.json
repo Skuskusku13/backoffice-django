@@ -601,5 +601,75 @@
     "price": 840.0,
     "onSale": true,
     "type": "ajout"
+  },
+  {
+    "id": 1,
+    "date": "2025-03-16T11:01:02.501716+01:00",
+    "tig_id": 12,
+    "category": 0,
+    "quantity": 27,
+    "price": 8.3,
+    "onSale": false,
+    "type": "retraitVente"
+  },
+  {
+    "id": 2,
+    "date": "2025-03-16T12:01:02.501716+01:00",
+    "tig_id": 12,
+    "category": 0,
+    "quantity": 15,
+    "price": 9.3,
+    "onSale": false,
+    "type": "retraitVente"
+  },
+  {
+    "id": 3,
+    "date": "2025-03-16T13:01:02.501716+01:00",
+    "tig_id": 12,
+    "category": 0,
+    "quantity": 30,
+    "price": 10.3,
+    "onSale": true,
+    "type": "retraitVente"
+  },
+  {
+    "id": 4,
+    "date": "2025-03-18T19:36:04.203859+01:00",
+    "tig_id": 4,
+    "category": 0,
+    "quantity": 20,
+    "price": 0.0,
+    "onSale": false,
+    "type": "ajout"
+  },
+  {
+    "id": 5,
+    "date": "2025-03-18T19:36:22.230518+01:00",
+    "tig_id": 4,
+    "category": 0,
+    "quantity": -10,
+    "price": 120.0,
+    "onSale": false,
+    "type": "retraitVente"
+  },
+  {
+    "id": 6,
+    "date": "2025-03-19T21:40:46.761433+01:00",
+    "tig_id": 9,
+    "category": 2,
+    "quantity": 32,
+    "price": 78.0,
+    "onSale": false,
+    "type": "ajout"
+  },
+  {
+    "id": 7,
+    "date": "2025-03-19T21:40:57.685632+01:00",
+    "tig_id": 9,
+    "category": 2,
+    "quantity": -16,
+    "price": 56.0,
+    "onSale": false,
+    "type": "retraitVente"
   }
 ]
