@@ -75,7 +75,7 @@ class RevenueByFilters(APIView):
             start_date = today
             date_format = "%%Y-%%m-%%d"
 
-        # Filtrage par date
+        # Filtrage par start_date
         transactions = transactions.filter(date__gte=start_date)
         # Calcul du chiffre d'affaires total
         total_revenue = sum([t.get_revenue() for t in transactions])
