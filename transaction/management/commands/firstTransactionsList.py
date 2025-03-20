@@ -27,7 +27,7 @@ class Command(BaseCommand):
         except json.JSONDecodeError:
             self.stdout.write(self.style.ERROR("Invalid JSON format."))
             return
-
+        i = 1
         for transaction in data:
             serializer = TransactionSerializer(data={
                 'date': str(transaction['date']),
@@ -41,6 +41,7 @@ class Command(BaseCommand):
             if serializer.is_valid():
                 serializer.save()
                 self.stdout.write(
-                    self.style.SUCCESS('[' + time.ctime() + '] Successfully added transaction'))
+                    self.style.SUCCESS('[' + time.ctime() + '] Successfully added transaction ' + str(i)))
+                i += 1
 
         self.stdout.write('[' + time.ctime() + '] Data add terminated.')
