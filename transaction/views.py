@@ -47,9 +47,10 @@ class RevenueByFilters(APIView):
         period = request.GET.get('period', 'year')
         sale_type = request.GET.get('type', 'all')
         category = request.GET.get('category', None)
+        transactions = Transaction.objects
 
+        transactions = transactions.filter(type="retraitVente")
         # Filtre par catégorie
-        transactions = Transaction.objects.filter(type="retraitVente")
         if category:
             transactions = transactions.filter(category=category)
         # Filtre par promo
@@ -58,8 +59,8 @@ class RevenueByFilters(APIView):
         elif sale_type == "false":
             transactions = transactions.filter(onSale=False)
 
-        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
         # Filtre par période avec %% pour échapper le %
+        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
         if period == 'year':
             start_date = today.replace(month=1, day=1)
             date_format = "%%Y"
@@ -75,9 +76,9 @@ class RevenueByFilters(APIView):
         else:
             start_date = today
             date_format = "%%Y-%%m-%%d"
+        transactions_by_start_date = transactions.filter(date__gte=start_date)
 
         # Filtrage par start_date et calcul du chiffre d'affaires
-        transactions_by_start_date = transactions.filter(date__gte=start_date)
         total_revenue_actual = sum([t.get_revenue() for t in transactions_by_start_date])
         # Calcul du chiffre d'affaires total
         total_revenue = sum([t.get_revenue() for t in transactions])
