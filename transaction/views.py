@@ -84,22 +84,11 @@ class RevenuesAndBillsByFilters(APIView):
 
         total_revenue_actual = sum([t.get_price() for t in transactions_ventes_actual])
         total_revenue = sum([t.get_price() for t in transactions_ventes])
-        revenues_by_period = (
-            transactions_ventes
-            .extra(select={'date_group': f"strftime('{date_format}', date)"})
-            .values('date_group')
-            .annotate(total=Sum('price'))
-            .order_by('date_group')
-        )
+        revenues_by_period = list_by_period(transactions_ventes, date_format)
+
         total_bills_actual = sum([t.get_price() for t in transactions_ajouts_actual])
         total_bills = sum([t.get_price() for t in transactions_ajouts])
-        bills_by_period = (
-            transactions_ajouts
-            .extra(select={'date_group': f"strftime('{date_format}', date)"})
-            .values('date_group')
-            .annotate(total=Sum('price'))
-            .order_by('date_group')
-        )
+        bills_by_period = list_by_period(transactions_ajouts, date_format)
 
         return Response({
             "totalRevenueActual": total_revenue_actual,
@@ -109,3 +98,10 @@ class RevenuesAndBillsByFilters(APIView):
             "totalBills": total_bills,
             "billsByPeriod": list(bills_by_period)
         })
+
+
+def list_by_period(p_list, p_date_format):
+    return (p_list.extra(select={'date_group': f"strftime('{p_date_format}', date)"})
+            .values('date_group')
+            .annotate(total=Sum('price'))
+            .order_by('date_group'))
