@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django.db.models import Sum
 from django.http import JsonResponse, Http404
@@ -58,7 +58,7 @@ class RevenueByFilters(APIView):
         elif sale_type == "false":
             transactions = transactions.filter(onSale=False)
 
-        today = now()
+        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
         # Filtre par période avec %% pour échapper le %
         if period == 'year':
             start_date = today.replace(month=1, day=1)
