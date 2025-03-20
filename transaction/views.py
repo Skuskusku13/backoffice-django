@@ -65,7 +65,7 @@ class RevenueByFilters(APIView):
             date_format = "%%Y"
         elif period == 'quarter':
             start_date = today - timedelta(days=90)
-            date_format = "%%Y-Q %%m/3+1"
+            date_format = "%%Y-Q%%m"
         elif period == 'month':
             start_date = today.replace(day=1)
             date_format = "%%Y-%%m"
