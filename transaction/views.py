@@ -82,7 +82,7 @@ class RevenueByFilters(APIView):
         # Calcul du chiffre d'affaires total
         total_revenue = sum([t.get_revenue() for t in transactions])
         # Préparation des données pour le graphique (groupées par date)
-        revenue_per_period = (
+        revenues_by_period = (
             transactions
             .extra(select={'date_group': f"strftime('{date_format}', date)"})
             .values('date_group')
@@ -91,7 +91,7 @@ class RevenueByFilters(APIView):
         )
 
         return Response({
-            "total_revenue_actual": total_revenue_actual,
-            "total_revenue": total_revenue,
-            "revenue_per_period": list(revenue_per_period)
+            "totalRevenueActual": total_revenue_actual,
+            "totalRevenue": total_revenue,
+            "revenuesByPeriod": list(revenues_by_period)
         })
